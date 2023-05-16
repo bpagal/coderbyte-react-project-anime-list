@@ -21,14 +21,15 @@ interface AnimeResponse {
 }
 
 interface HomeProps {
-  handleAnimeClick: () => void;
+  handleAnimeClick: (animeId: string) => void;
+  animeDataStatus: 'idle' | 'loading' | 'resolved' | 'rejected';
+  animeResult: Anime[];
 }
-const Home = ({ handleAnimeClick }: HomeProps) => {
-  const [animeDataStatus, setAnimeDataStatus] = useState<
-    'idle' | 'loading' | 'resolved' | 'rejected'
-  >('idle');
-  const [animeResult, setAnimeResult] = useState<Anime[]>([]);
-
+const Home = ({
+  handleAnimeClick,
+  animeDataStatus,
+  animeResult,
+}: HomeProps) => {
   const [filterValue, setFilterValue] = useState('');
   const filteredData =
     filterValue === ''
@@ -67,24 +68,6 @@ const Home = ({ handleAnimeClick }: HomeProps) => {
         heartAnimes.some((heartAnime) => heartAnime.id === anime.id)
       );
   // * heart filter end
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setAnimeDataStatus('loading');
-      try {
-        const result = await axios.get<AnimeResponse>(
-          'http://localhost:5173/api/anime'
-        );
-
-        setAnimeDataStatus('resolved');
-        setAnimeResult(result.data.data);
-      } catch (error) {
-        setAnimeDataStatus('rejected');
-      }
-    };
-
-    fetchData();
-  }, []);
 
   if (animeDataStatus === 'loading') {
     return <Spinner />;
@@ -125,7 +108,7 @@ const Home = ({ handleAnimeClick }: HomeProps) => {
               handleStarClick={() => handleStarClick(anime.id)}
               isHeartActive={isHeartActive}
               handleHeartClick={() => handleHeartClick(anime.id)}
-              handleAnimeClick={handleAnimeClick}
+              handleAnimeClick={() => handleAnimeClick(anime.id)}
             />
           );
         })}
