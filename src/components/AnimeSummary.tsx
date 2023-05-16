@@ -7,6 +7,7 @@ interface AnimeSummaryProps {
   handleStarClick: () => void;
   isHeartActive: boolean;
   handleHeartClick: () => void;
+  handleAnimeClick: () => void;
 }
 
 const AnimeSummary = ({
@@ -15,13 +16,10 @@ const AnimeSummary = ({
   handleStarClick,
   isHeartActive,
   handleHeartClick,
+  handleAnimeClick,
 }: AnimeSummaryProps) => {
   const { ratingRank, favoritesCount, titles } = attributes;
   const title = titles.en ?? titles.en_jp;
-
-  const handleAnimeClick = () => {
-    alert('ANIME DETIALS CLICKED');
-  };
 
   return (
     <div

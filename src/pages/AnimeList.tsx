@@ -20,7 +20,10 @@ interface AnimeResponse {
   };
 }
 
-const Home = () => {
+interface HomeProps {
+  handleAnimeClick: () => void;
+}
+const Home = ({ handleAnimeClick }: HomeProps) => {
   const [animeDataStatus, setAnimeDataStatus] = useState<
     'idle' | 'loading' | 'resolved' | 'rejected'
   >('idle');
@@ -122,6 +125,7 @@ const Home = () => {
               handleStarClick={() => handleStarClick(anime.id)}
               isHeartActive={isHeartActive}
               handleHeartClick={() => handleHeartClick(anime.id)}
+              handleAnimeClick={handleAnimeClick}
             />
           );
         })}

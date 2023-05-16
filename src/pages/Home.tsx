@@ -7,13 +7,13 @@ const Home = () => {
 
   return (
     <>
-      <button
-        className="p-3 bg-red-500 rounded-sm "
-        onClick={() => setIsAnimeDetailsVisible((prev) => !prev)}
-      >
-        Change Page
-      </button>
-      {isAnimeDetailsVisible ? <AnimeDetails /> : <AnimeList />}
+      {isAnimeDetailsVisible ? (
+        <AnimeDetails handleGoBack={() => setIsAnimeDetailsVisible(false)} />
+      ) : (
+        <AnimeList
+          handleAnimeClick={() => setIsAnimeDetailsVisible((prev) => !prev)}
+        />
+      )}
     </>
   );
 };
