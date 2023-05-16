@@ -40,7 +40,9 @@ const Home = () => {
       <HeartFilterProvider>
         {animeDetails ? (
           <AnimeDetails
-            handleGoBack={() => setAnimeDetails(null)}
+            handleGoBack={() => {
+              setAnimeDetails(null);
+            }}
             attributes={
               animeResult.find((anime) => anime.id === animeDetails.id)
                 ?.attributes as AnimeAttributes
