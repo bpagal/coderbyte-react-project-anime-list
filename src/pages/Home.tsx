@@ -49,9 +49,9 @@ const Home = () => {
   }
 
   return (
-    <div className="mt-9">
-      <h1 className="text-3xl">Anime List</h1>
-      <Toolbar />
+    <div className="p-4">
+      <h1 className="text-3xl text-center mb-4">Anime List</h1>
+      <Toolbar resultCount={animeResult.length} />
 
       <div
         className="grid gap-4"
