@@ -19,8 +19,15 @@ const AnimeSummary = ({
   const { ratingRank, favoritesCount, titles } = attributes;
   const title = titles.en ?? titles.en_jp;
 
+  const handleAnimeClick = () => {
+    alert('ANIME DETIALS CLICKED');
+  };
+
   return (
-    <div className="bg-gray-800 border-4 border-red-500">
+    <div
+      className="bg-gray-800 border-4 border-red-500"
+      onClick={handleAnimeClick}
+    >
       <img src={attributes.posterImage.small} alt="poster image" />
       <div className="py-3 text-gray-100 text-center">
         <h2 className="text-xl">{title}</h2>

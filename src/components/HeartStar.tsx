@@ -7,31 +7,38 @@ interface StarProps {
 const HeartStar = ({ type, isActive, handleClick }: StarProps) => {
   const icon = type === 'heart' ? '❤️' : '⭐';
 
+  const handleIconClick = (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    handleClick();
+  };
+
   if (isActive) {
     return (
-      <h1
+      <span
         className="text-xl cursor-pointer mx-1"
         style={{
           userSelect: 'none',
         }}
-        onClick={handleClick}
+        onClick={handleIconClick}
       >
         {icon}
-      </h1>
+      </span>
     );
   }
 
   return (
-    <h1
+    <span
       className="text-xl text-transparent cursor-pointer mx-1 "
       style={{
         textShadow: '0 0 0 gray',
         userSelect: 'none',
       }}
-      onClick={handleClick}
+      onClick={handleIconClick}
     >
       {icon}
-    </h1>
+    </span>
   );
 };
 
