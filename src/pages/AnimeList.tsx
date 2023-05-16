@@ -3,8 +3,8 @@ import { LegacyRef, forwardRef, useState } from 'react';
 import { Anime } from '../types/anime';
 import Spinner from '../components/Spinner';
 import AnimeSummary from '../components/AnimeSummary';
-import { useHeartFilter } from '../hooks/useHeartFilter';
 import { useStarFilterContext } from '../hooks/useStarFilterContext';
+import { useHeartFilterContext } from '../hooks/useHeartFilterContext';
 
 interface HomeProps {
   handleAnimeClick: (animeId: string) => void;
@@ -25,8 +25,7 @@ const Home = forwardRef(function AnimeList(
         });
 
   // * starred filter start
-  const { isStarFilterActive, starredAnimes, handleStarClick } =
-    useStarFilterContext();
+  const { isStarFilterActive, starredAnimes } = useStarFilterContext();
   const filteredStarredData = !isStarFilterActive
     ? filteredData
     : filteredData.filter((anime) =>
@@ -35,12 +34,7 @@ const Home = forwardRef(function AnimeList(
   // * starred filter end
 
   // * heart filter start
-  const {
-    isHeartFilterActive,
-    setIsHeartFilterActive,
-    heartAnimes,
-    handleHeartClick,
-  } = useHeartFilter();
+  const { isHeartFilterActive, heartAnimes } = useHeartFilterContext();
 
   const filteredHeartData = !isHeartFilterActive
     ? filteredStarredData
@@ -60,8 +54,6 @@ const Home = forwardRef(function AnimeList(
         resultCount={filteredHeartData.length}
         filterValue={filterValue}
         setFilterValue={setFilterValue}
-        isHeartFilterActive={isHeartFilterActive}
-        setIsHeartFilterActive={() => setIsHeartFilterActive((prev) => !prev)}
       />
 
       <div
@@ -71,22 +63,12 @@ const Home = forwardRef(function AnimeList(
         }}
       >
         {filteredHeartData.map((anime) => {
-          const isStarActive = starredAnimes.some(
-            (elem) => elem.id === anime.id
-          );
-          const isHeartActive = heartAnimes.some(
-            (elem) => elem.id === anime.id
-          );
-
           return (
             <div key={anime.id} ref={ref}>
               <AnimeSummary
                 attributes={anime.attributes}
-                isStarActive={isStarActive}
-                handleStarClick={() => handleStarClick(anime.id)}
-                isHeartActive={isHeartActive}
-                handleHeartClick={() => handleHeartClick(anime.id)}
                 handleAnimeClick={() => handleAnimeClick(anime.id)}
+                animeId={anime.id}
               />
             </div>
           );

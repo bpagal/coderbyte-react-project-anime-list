@@ -4,6 +4,7 @@ import AnimeDetails from './AnimeDetails';
 import { AnimeAttributes } from '../types/anime';
 import { useFetchAnime } from '../hooks/useFetchAnime';
 import StarFilterProvider from '../components/Providers/StarFilterProvider';
+import HeartFilterProvider from '../components/Providers/HeartFilterProvider';
 
 const Home = () => {
   const [animeDetails, setAnimeDetails] = useState<{
@@ -36,26 +37,28 @@ const Home = () => {
 
   return (
     <StarFilterProvider>
-      {animeDetails ? (
-        <AnimeDetails
-          handleGoBack={() => setAnimeDetails(null)}
-          attributes={
-            animeResult.find((anime) => anime.id === animeDetails.id)
-              ?.attributes as AnimeAttributes
-          }
-        />
-      ) : (
-        <AnimeList
-          handleAnimeClick={(animeId) =>
-            setAnimeDetails({
-              id: animeId,
-            })
-          }
-          animeDataStatus={animeDataStatus}
-          animeResult={animeResult}
-          ref={lastBookElementRef}
-        />
-      )}
+      <HeartFilterProvider>
+        {animeDetails ? (
+          <AnimeDetails
+            handleGoBack={() => setAnimeDetails(null)}
+            attributes={
+              animeResult.find((anime) => anime.id === animeDetails.id)
+                ?.attributes as AnimeAttributes
+            }
+          />
+        ) : (
+          <AnimeList
+            handleAnimeClick={(animeId) =>
+              setAnimeDetails({
+                id: animeId,
+              })
+            }
+            animeDataStatus={animeDataStatus}
+            animeResult={animeResult}
+            ref={lastBookElementRef}
+          />
+        )}
+      </HeartFilterProvider>
     </StarFilterProvider>
   );
 };

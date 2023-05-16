@@ -1,3 +1,4 @@
+import { useHeartFilterContext } from '../hooks/useHeartFilterContext';
 import { useStarFilterContext } from '../hooks/useStarFilterContext';
 import HeartStar from './HeartStar';
 
@@ -5,18 +6,16 @@ interface ToolbarProps {
   resultCount: number;
   filterValue: string;
   setFilterValue: (val: string) => void;
-  isHeartFilterActive: boolean;
-  setIsHeartFilterActive: () => void;
 }
 
 const Toolbar = ({
   resultCount,
   filterValue,
   setFilterValue,
-  isHeartFilterActive,
-  setIsHeartFilterActive,
 }: ToolbarProps) => {
   const { isStarFilterActive, toggleStarFilterActive } = useStarFilterContext();
+  const { isHeartFilterActive, toggleHeartFilterActive } =
+    useHeartFilterContext();
 
   return (
     <div className="flex justify-between bg- p-4">
@@ -30,7 +29,7 @@ const Toolbar = ({
         <HeartStar
           type="heart"
           isActive={isHeartFilterActive}
-          handleClick={setIsHeartFilterActive}
+          handleClick={toggleHeartFilterActive}
         />
       </div>
       <input

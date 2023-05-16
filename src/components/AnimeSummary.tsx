@@ -1,23 +1,23 @@
+import { useHeartFilterContext } from '../hooks/useHeartFilterContext';
+import { useStarFilterContext } from '../hooks/useStarFilterContext';
 import { AnimeAttributes } from '../types/anime';
 import HeartStar from './HeartStar';
 
 interface AnimeSummaryProps {
   attributes: AnimeAttributes;
-  isStarActive: boolean;
-  handleStarClick: () => void;
-  isHeartActive: boolean;
-  handleHeartClick: () => void;
   handleAnimeClick: () => void;
+  animeId: string;
 }
 
 const AnimeSummary = ({
   attributes,
-  isStarActive,
-  handleStarClick,
-  isHeartActive,
-  handleHeartClick,
   handleAnimeClick,
+  animeId,
 }: AnimeSummaryProps) => {
+  const { handleStarClick, starredAnimes } = useStarFilterContext();
+  const { handleHeartClick, heartAnimes } = useHeartFilterContext();
+  const isStarActive = starredAnimes.some((elem) => elem.id === animeId);
+  const isHeartActive = heartAnimes.some((elem) => elem.id === animeId);
   const { ratingRank, favoritesCount, titles } = attributes;
   const title = titles.en ?? titles.en_jp;
 
@@ -33,7 +33,7 @@ const AnimeSummary = ({
           <div className="flex">
             <HeartStar
               isActive={isStarActive}
-              handleClick={handleStarClick}
+              handleClick={() => handleStarClick(animeId)}
               type="star"
             />
             <h2 className="text-xl">{ratingRank}</h2>
@@ -41,7 +41,7 @@ const AnimeSummary = ({
           <div className="flex">
             <HeartStar
               isActive={isHeartActive}
-              handleClick={handleHeartClick}
+              handleClick={() => handleHeartClick(animeId)}
               type="heart"
             />
             <h2 className="text-xl">{favoritesCount}</h2>

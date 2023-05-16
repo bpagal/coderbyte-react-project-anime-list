@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
+import { HeartFilterContext } from '../../hooks/useHeartFilterContext';
 
-export const useHeartFilter = () => {
+interface HeartFilterProviderProps {
+  children: ReactNode;
+}
+const HeartFilterProvider = ({ children }: HeartFilterProviderProps) => {
   const [isHeartFilterActive, setIsHeartFilterActive] = useState(false);
   const [heartAnimes, setHeartAnimes] = useState<
     {
@@ -27,11 +31,23 @@ export const useHeartFilter = () => {
       localStorage.setItem('heartAnimes', JSON.stringify(newHeartAnimes));
     }
   };
-
-  return {
-    isHeartFilterActive,
-    setIsHeartFilterActive,
-    heartAnimes,
-    handleHeartClick,
+  const toggleHeartFilterActive = () => {
+    setIsHeartFilterActive((prev) => !prev);
   };
+
+  return (
+    <HeartFilterContext.Provider
+      value={{
+        isHeartFilterActive,
+        toggleHeartFilterActive,
+        heartAnimes,
+        setHeartAnimes,
+        handleHeartClick,
+      }}
+    >
+      {children}
+    </HeartFilterContext.Provider>
+  );
 };
+
+export default HeartFilterProvider;
