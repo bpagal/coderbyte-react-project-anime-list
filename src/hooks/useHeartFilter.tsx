@@ -6,19 +6,25 @@ export const useHeartFilter = () => {
     {
       id: string;
     }[]
-  >([]);
+  >(JSON.parse(localStorage.getItem('heartAnimes') as string) ?? []);
   const handleHeartClick = (animeId: string) => {
     const isHeartActive = heartAnimes.some((elem) => elem.id === animeId);
 
     if (isHeartActive) {
-      setHeartAnimes(heartAnimes.filter((elem) => elem.id !== animeId));
+      const newHeartAnimes = heartAnimes.filter((elem) => elem.id !== animeId);
+
+      setHeartAnimes(newHeartAnimes);
+      localStorage.setItem('heartAnimes', JSON.stringify(newHeartAnimes));
     } else {
-      setHeartAnimes([
+      const newHeartAnimes = [
         ...heartAnimes,
         {
           id: animeId,
         },
-      ]);
+      ];
+
+      setHeartAnimes(newHeartAnimes);
+      localStorage.setItem('heartAnimes', JSON.stringify(newHeartAnimes));
     }
   };
 

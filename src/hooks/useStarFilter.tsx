@@ -6,19 +6,27 @@ export const useStarFilter = () => {
     {
       id: string;
     }[]
-  >([]);
+  >(JSON.parse(localStorage.getItem('starredAnimes') as string) ?? []);
   const handleStarClick = (animeId: string) => {
     const isStarActive = starredAnimes.some((elem) => elem.id === animeId);
 
     if (isStarActive) {
-      setStarredAnimes(starredAnimes.filter((elem) => elem.id !== animeId));
+      const newStarredAnimes = starredAnimes.filter(
+        (elem) => elem.id !== animeId
+      );
+
+      setStarredAnimes(newStarredAnimes);
+      localStorage.setItem('starredAnimes', JSON.stringify(newStarredAnimes));
     } else {
-      setStarredAnimes([
+      const newStarredAnimes = [
         ...starredAnimes,
         {
           id: animeId,
         },
-      ]);
+      ];
+
+      setStarredAnimes(newStarredAnimes);
+      localStorage.setItem('starredAnimes', JSON.stringify(newStarredAnimes));
     }
   };
 
