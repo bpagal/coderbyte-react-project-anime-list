@@ -14,9 +14,9 @@ const AnimeDetails = ({ handleGoBack, attributes }: AnimeDetailsProps) => {
       <button className="p-3 bg-blue-500 rounded-lg" onClick={handleGoBack}>
         &lt; Go Back
       </button>
-      <div className="grid grid-cols-[1fr_3fr]">
+      <div className="grid grid-cols-[0.5fr_2fr] gap-10">
         <LeftDetails attributes={attributes} />
-        <MainDetails />
+        <MainDetails synopsis={attributes.synopsis} />
       </div>
     </div>
   );

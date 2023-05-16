@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
+import { StarFilterContext } from '../../hooks/useStarFilterContext';
 
-export const useStarFilter = () => {
+interface StarFilterProviderProps {
+  children: ReactNode;
+}
+const StarFilterProvider = ({ children }: StarFilterProviderProps) => {
   const [isStarFilterActive, setIsStarFilterActive] = useState(false);
   const [starredAnimes, setStarredAnimes] = useState<
     {
@@ -29,11 +33,23 @@ export const useStarFilter = () => {
       localStorage.setItem('starredAnimes', JSON.stringify(newStarredAnimes));
     }
   };
-
-  return {
-    isStarFilterActive,
-    setIsStarFilterActive,
-    starredAnimes,
-    handleStarClick,
+  const toggleStarFilterActive = () => {
+    setIsStarFilterActive((prev) => !prev);
   };
+
+  return (
+    <StarFilterContext.Provider
+      value={{
+        isStarFilterActive,
+        toggleStarFilterActive,
+        starredAnimes,
+        setStarredAnimes,
+        handleStarClick,
+      }}
+    >
+      {children}
+    </StarFilterContext.Provider>
+  );
 };
+
+export default StarFilterProvider;

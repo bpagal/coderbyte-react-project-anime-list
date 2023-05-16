@@ -49,7 +49,7 @@ export interface AnimeAttributes {
   userCount: number;
   favoritesCount: number;
   startDate: string;
-  endDate: string;
+  endDate: null | string;
   nextRelease: string | null;
   popularityRank: number;
   ratingRank: number;

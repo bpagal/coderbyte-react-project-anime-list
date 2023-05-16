@@ -3,8 +3,8 @@ import { LegacyRef, forwardRef, useState } from 'react';
 import { Anime } from '../types/anime';
 import Spinner from '../components/Spinner';
 import AnimeSummary from '../components/AnimeSummary';
-import { useStarFilter } from '../hooks/useStarFilter';
 import { useHeartFilter } from '../hooks/useHeartFilter';
+import { useStarFilterContext } from '../hooks/useStarFilterContext';
 
 interface HomeProps {
   handleAnimeClick: (animeId: string) => void;
@@ -25,13 +25,8 @@ const Home = forwardRef(function AnimeList(
         });
 
   // * starred filter start
-  const {
-    isStarFilterActive,
-    setIsStarFilterActive,
-    starredAnimes,
-    handleStarClick,
-  } = useStarFilter();
-
+  const { isStarFilterActive, starredAnimes, handleStarClick } =
+    useStarFilterContext();
   const filteredStarredData = !isStarFilterActive
     ? filteredData
     : filteredData.filter((anime) =>
@@ -65,8 +60,6 @@ const Home = forwardRef(function AnimeList(
         resultCount={filteredHeartData.length}
         filterValue={filterValue}
         setFilterValue={setFilterValue}
-        isStarFilterActive={isStarFilterActive}
-        setIsStarFilterActive={() => setIsStarFilterActive((prev) => !prev)}
         isHeartFilterActive={isHeartFilterActive}
         setIsHeartFilterActive={() => setIsHeartFilterActive((prev) => !prev)}
       />

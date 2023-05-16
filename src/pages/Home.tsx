@@ -3,6 +3,7 @@ import AnimeList from './AnimeList';
 import AnimeDetails from './AnimeDetails';
 import { AnimeAttributes } from '../types/anime';
 import { useFetchAnime } from '../hooks/useFetchAnime';
+import StarFilterProvider from '../components/Providers/StarFilterProvider';
 
 const Home = () => {
   const [animeDetails, setAnimeDetails] = useState<{
@@ -34,7 +35,7 @@ const Home = () => {
   );
 
   return (
-    <>
+    <StarFilterProvider>
       {animeDetails ? (
         <AnimeDetails
           handleGoBack={() => setAnimeDetails(null)}
@@ -44,20 +45,18 @@ const Home = () => {
           }
         />
       ) : (
-        <>
-          <AnimeList
-            handleAnimeClick={(animeId) =>
-              setAnimeDetails({
-                id: animeId,
-              })
-            }
-            animeDataStatus={animeDataStatus}
-            animeResult={animeResult}
-            ref={lastBookElementRef}
-          />
-        </>
+        <AnimeList
+          handleAnimeClick={(animeId) =>
+            setAnimeDetails({
+              id: animeId,
+            })
+          }
+          animeDataStatus={animeDataStatus}
+          animeResult={animeResult}
+          ref={lastBookElementRef}
+        />
       )}
-    </>
+    </StarFilterProvider>
   );
 };
 
