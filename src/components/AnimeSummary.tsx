@@ -1,10 +1,17 @@
 import { AnimeAttributes } from '../types/anime';
+import HeartStar from './HeartStar';
 
 interface AnimeSummaryProps {
   attributes: AnimeAttributes;
+  isStarActive: boolean;
+  handleStarClick: () => void;
 }
 
-const AnimeSummary = ({ attributes }: AnimeSummaryProps) => {
+const AnimeSummary = ({
+  attributes,
+  isStarActive,
+  handleStarClick,
+}: AnimeSummaryProps) => {
   const { ratingRank, favoritesCount, titles } = attributes;
   const title = titles.en ?? titles.en_jp;
 
@@ -14,8 +21,16 @@ const AnimeSummary = ({ attributes }: AnimeSummaryProps) => {
       <div className="py-3 text-gray-100 text-center">
         <h2 className="text-xl">{title}</h2>
         <div className="flex flex-row justify-around">
-          <h2 className="text-xl">⭐{ratingRank}</h2>
-          <h2 className="text-xl">❤️{favoritesCount}</h2>
+          <div className="flex">
+            <HeartStar
+              isActive={isStarActive}
+              handleClick={handleStarClick}
+              type="star"
+            />
+            <h2 className="text-xl">{ratingRank}</h2>
+          </div>
+
+          {/* <h2 className="text-xl">❤️{favoritesCount}</h2> */}
         </div>
       </div>
     </div>

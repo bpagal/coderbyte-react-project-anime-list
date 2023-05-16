@@ -5,34 +5,33 @@ interface ToolbarProps {
   resultCount: number;
   filterValue: string;
   setFilterValue: (val: string) => void;
+  isStarFilterActive: boolean;
+  setIsStarFilterActive: () => void;
 }
 
 const Toolbar = ({
   resultCount,
   filterValue,
   setFilterValue,
+  isStarFilterActive,
+  setIsStarFilterActive,
 }: ToolbarProps) => {
-  const [isStarActive, setIsStarActive] = useState(false);
-  const [isHeartActive, setIsHeartActive] = useState(false);
-
   return (
     <div className="flex justify-between bg- p-4">
       <div className="flex">
         <h2>Filter</h2>
         <HeartStar
           type="star"
-          isActive={isStarActive}
-          handleClick={() => {
-            setIsStarActive((prev) => !prev);
-          }}
+          isActive={isStarFilterActive}
+          handleClick={setIsStarFilterActive}
         />
-        <HeartStar
+        {/* <HeartStar
           type="heart"
           isActive={isHeartActive}
           handleClick={() => {
             setIsHeartActive((prev) => !prev);
           }}
-        />
+        /> */}
       </div>
       <input
         className="

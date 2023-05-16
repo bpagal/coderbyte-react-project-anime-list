@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Anime } from '../types/anime';
 import Spinner from '../components/Spinner';
 import AnimeSummary from '../components/AnimeSummary';
-import { useFilter } from '../hooks/useFilter';
+import { useStarFilter } from '../hooks/useStarFilter';
 
 interface AnimeResponse {
   data: Anime[];
@@ -24,9 +24,7 @@ const Home = () => {
     'idle' | 'loading' | 'resolved' | 'rejected'
   >('idle');
   const [animeResult, setAnimeResult] = useState<Anime[]>([]);
-  // const { filterValue, setFilterValue, filteredData } = useFilter({
-  //   rawData: animeResult,
-  // });
+
   const [filterValue, setFilterValue] = useState('');
   const filteredData =
     filterValue === ''
@@ -36,10 +34,20 @@ const Home = () => {
           return titles?.en?.toLowerCase().includes(filterValue.toLowerCase());
         });
 
-  useEffect(() => {
-    console.log('💖💛💙💜💚 filteredData');
-    console.log(filteredData);
-  }, [filteredData]);
+  // * starred filter start
+  const {
+    isStarFilterActive,
+    setIsStarFilterActive,
+    starredAnimes,
+    handleStarClick,
+  } = useStarFilter();
+
+  const filteredStarredData = !isStarFilterActive
+    ? filteredData
+    : filteredData.filter((anime) =>
+        starredAnimes.some((starred) => starred.id === anime.id)
+      );
+  // * starred filter end
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +59,6 @@ const Home = () => {
 
         setAnimeDataStatus('resolved');
         setAnimeResult(result.data.data);
-        // console.log('💖💛💙💜💚 result');
-        // console.log(result.data.data[0].attributes.titles.en);
       } catch (error) {
         setAnimeDataStatus('rejected');
       }
@@ -69,9 +75,13 @@ const Home = () => {
     <div className="p-4">
       <h1 className="text-3xl text-center mb-4">Anime List</h1>
       <Toolbar
-        resultCount={filteredData.length}
+        resultCount={filteredStarredData.length}
         filterValue={filterValue}
         setFilterValue={setFilterValue}
+        isStarFilterActive={isStarFilterActive}
+        setIsStarFilterActive={() => {
+          setIsStarFilterActive((prev) => !prev);
+        }}
       />
 
       <div
@@ -80,8 +90,19 @@ const Home = () => {
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
         }}
       >
-        {filteredData.map((anime) => {
-          return <AnimeSummary key={anime.id} attributes={anime.attributes} />;
+        {filteredStarredData.map((anime) => {
+          const isStarActive = starredAnimes.some(
+            (elem) => elem.id === anime.id
+          );
+
+          return (
+            <AnimeSummary
+              key={anime.id}
+              isStarActive={isStarActive}
+              handleStarClick={() => handleStarClick(anime.id)}
+              attributes={anime.attributes}
+            />
+          );
         })}
       </div>
     </div>
