@@ -45,6 +45,7 @@ const Home = () => {
               animeResult.find((anime) => anime.id === animeDetails.id)
                 ?.attributes as AnimeAttributes
             }
+            animeId={animeDetails.id}
           />
         ) : (
           <AnimeList

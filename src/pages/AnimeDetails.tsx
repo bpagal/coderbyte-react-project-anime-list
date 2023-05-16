@@ -5,9 +5,14 @@ import { AnimeAttributes } from '../types/anime';
 interface AnimeDetailsProps {
   handleGoBack: () => void;
   attributes: AnimeAttributes;
+  animeId: string;
 }
 
-const AnimeDetails = ({ handleGoBack, attributes }: AnimeDetailsProps) => {
+const AnimeDetails = ({
+  handleGoBack,
+  attributes,
+  animeId,
+}: AnimeDetailsProps) => {
   return (
     <div className="p-4">
       <h1 className="text-3xl text-center mb-4">Anime Details Page</h1>
@@ -15,7 +20,7 @@ const AnimeDetails = ({ handleGoBack, attributes }: AnimeDetailsProps) => {
         &lt; Go Back
       </button>
       <div className="grid grid-cols-[0.5fr_2fr] gap-10">
-        <LeftDetails attributes={attributes} />
+        <LeftDetails attributes={attributes} animeId={animeId} />
         <MainDetails synopsis={attributes.synopsis} />
       </div>
     </div>
