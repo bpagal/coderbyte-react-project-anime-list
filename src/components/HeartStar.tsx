@@ -23,9 +23,9 @@ const HeartStar = ({ type, isActive, handleClick }: StarProps) => {
 
   return (
     <h1
-      className="text-xl text-transparent cursor-pointer mx-1"
+      className="text-xl text-transparent cursor-pointer mx-1 "
       style={{
-        textShadow: '0 0 0 white',
+        textShadow: '0 0 0 gray',
         userSelect: 'none',
       }}
       onClick={handleClick}

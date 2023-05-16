@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Anime } from '../types/anime';
 import Spinner from '../components/Spinner';
 import AnimeSummary from '../components/AnimeSummary';
+import { useFilter } from '../hooks/useFilter';
 
 interface AnimeResponse {
   data: Anime[];
@@ -23,6 +24,22 @@ const Home = () => {
     'idle' | 'loading' | 'resolved' | 'rejected'
   >('idle');
   const [animeResult, setAnimeResult] = useState<Anime[]>([]);
+  // const { filterValue, setFilterValue, filteredData } = useFilter({
+  //   rawData: animeResult,
+  // });
+  const [filterValue, setFilterValue] = useState('');
+  const filteredData =
+    filterValue === ''
+      ? animeResult
+      : animeResult.filter((anime) => {
+          const { titles } = anime.attributes;
+          return titles?.en?.toLowerCase().includes(filterValue.toLowerCase());
+        });
+
+  useEffect(() => {
+    console.log('💖💛💙💜💚 filteredData');
+    console.log(filteredData);
+  }, [filteredData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +68,11 @@ const Home = () => {
   return (
     <div className="p-4">
       <h1 className="text-3xl text-center mb-4">Anime List</h1>
-      <Toolbar resultCount={animeResult.length} />
+      <Toolbar
+        resultCount={filteredData.length}
+        filterValue={filterValue}
+        setFilterValue={setFilterValue}
+      />
 
       <div
         className="grid gap-4"
@@ -59,7 +80,7 @@ const Home = () => {
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
         }}
       >
-        {animeResult.map((anime) => {
+        {filteredData.map((anime) => {
           return <AnimeSummary key={anime.id} attributes={anime.attributes} />;
         })}
       </div>
