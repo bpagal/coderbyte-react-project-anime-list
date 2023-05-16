@@ -70,7 +70,7 @@ const Home = () => {
       setAnimeDataStatus('loading');
       try {
         const result = await axios.get<AnimeResponse>(
-          'https://kitsu.io/api/edge/anime'
+          'http://localhost:5173/api/anime'
         );
 
         setAnimeDataStatus('resolved');
