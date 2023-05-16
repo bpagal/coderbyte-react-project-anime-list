@@ -1,48 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AnimeList from './AnimeList';
 import AnimeDetails from './AnimeDetails';
-import axios from 'axios';
-import { Anime, AnimeAttributes } from '../types/anime';
-
-interface AnimeResponse {
-  data: Anime[];
-  meta: {
-    count: number;
-  };
-  links: {
-    first: string;
-    prev: string;
-    next: string;
-    last: string;
-  };
-}
+import { AnimeAttributes } from '../types/anime';
+import { useFetchAnime } from '../hooks/useFetchAnime';
 
 const Home = () => {
   const [animeDetails, setAnimeDetails] = useState<{
     id: string;
   } | null>(null);
-  const [animeDataStatus, setAnimeDataStatus] = useState<
-    'idle' | 'loading' | 'resolved' | 'rejected'
-  >('idle');
-  const [animeResult, setAnimeResult] = useState<Anime[]>([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const { animeResult, animeDataStatus, hasNextPage } = useFetchAnime({
+    pageNumber,
+  });
 
+  const observerTarget = useRef(null);
   useEffect(() => {
-    const fetchData = async () => {
-      setAnimeDataStatus('loading');
-      try {
-        const result = await axios.get<AnimeResponse>(
-          'http://localhost:5173/api/anime'
-        );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          setPageNumber((prevPageNumber) => prevPageNumber + 1);
+        }
+      },
+      { threshold: 1 }
+    );
 
-        setAnimeDataStatus('resolved');
-        setAnimeResult(result.data.data);
-      } catch (error) {
-        setAnimeDataStatus('rejected');
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      const { current } = observerTarget;
+      if (current) {
+        observer.unobserve(current);
       }
     };
-
-    fetchData();
-  }, []);
+  }, [observerTarget, hasNextPage]);
 
   return (
     <>
@@ -55,15 +47,18 @@ const Home = () => {
           }
         />
       ) : (
-        <AnimeList
-          handleAnimeClick={(animeId) =>
-            setAnimeDetails({
-              id: animeId,
-            })
-          }
-          animeDataStatus={animeDataStatus}
-          animeResult={animeResult}
-        />
+        <div>
+          <AnimeList
+            handleAnimeClick={(animeId) =>
+              setAnimeDetails({
+                id: animeId,
+              })
+            }
+            animeDataStatus={animeDataStatus}
+            animeResult={animeResult}
+          />
+          <div ref={observerTarget} />
+        </div>
       )}
     </>
   );
