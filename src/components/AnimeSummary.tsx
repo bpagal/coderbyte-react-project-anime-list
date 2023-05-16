@@ -5,12 +5,16 @@ interface AnimeSummaryProps {
   attributes: AnimeAttributes;
   isStarActive: boolean;
   handleStarClick: () => void;
+  isHeartActive: boolean;
+  handleHeartClick: () => void;
 }
 
 const AnimeSummary = ({
   attributes,
   isStarActive,
   handleStarClick,
+  isHeartActive,
+  handleHeartClick,
 }: AnimeSummaryProps) => {
   const { ratingRank, favoritesCount, titles } = attributes;
   const title = titles.en ?? titles.en_jp;
@@ -29,8 +33,14 @@ const AnimeSummary = ({
             />
             <h2 className="text-xl">{ratingRank}</h2>
           </div>
-
-          {/* <h2 className="text-xl">❤️{favoritesCount}</h2> */}
+          <div className="flex">
+            <HeartStar
+              isActive={isHeartActive}
+              handleClick={handleHeartClick}
+              type="heart"
+            />
+            <h2 className="text-xl">{favoritesCount}</h2>
+          </div>
         </div>
       </div>
     </div>

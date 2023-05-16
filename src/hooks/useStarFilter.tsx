@@ -7,7 +7,6 @@ export const useStarFilter = () => {
       id: string;
     }[]
   >([]);
-
   const handleStarClick = (animeId: string) => {
     const isStarActive = starredAnimes.some((elem) => elem.id === animeId);
 

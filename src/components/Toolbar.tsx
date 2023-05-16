@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import HeartStar from './HeartStar';
 
 interface ToolbarProps {
@@ -7,6 +6,8 @@ interface ToolbarProps {
   setFilterValue: (val: string) => void;
   isStarFilterActive: boolean;
   setIsStarFilterActive: () => void;
+  isHeartFilterActive: boolean;
+  setIsHeartFilterActive: () => void;
 }
 
 const Toolbar = ({
@@ -15,6 +16,8 @@ const Toolbar = ({
   setFilterValue,
   isStarFilterActive,
   setIsStarFilterActive,
+  isHeartFilterActive,
+  setIsHeartFilterActive,
 }: ToolbarProps) => {
   return (
     <div className="flex justify-between bg- p-4">
@@ -25,13 +28,11 @@ const Toolbar = ({
           isActive={isStarFilterActive}
           handleClick={setIsStarFilterActive}
         />
-        {/* <HeartStar
+        <HeartStar
           type="heart"
-          isActive={isHeartActive}
-          handleClick={() => {
-            setIsHeartActive((prev) => !prev);
-          }}
-        /> */}
+          isActive={isHeartFilterActive}
+          handleClick={setIsHeartFilterActive}
+        />
       </div>
       <input
         className="
