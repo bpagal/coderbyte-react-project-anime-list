@@ -34,7 +34,7 @@ interface Meta {
   };
 }
 
-interface Attributes {
+export interface AnimeAttributes {
   createdAt: Date;
   updatedAt: Date;
   slug: string;
@@ -98,6 +98,6 @@ export interface Anime {
   links: {
     self: string;
   };
-  attributes: Attributes;
+  attributes: AnimeAttributes;
   relationships: { [key: string]: Relationship };
 }
