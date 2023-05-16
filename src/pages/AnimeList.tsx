@@ -1,35 +1,20 @@
-import axios from 'axios';
 import Toolbar from '../components/Toolbar';
-import { useEffect, useState } from 'react';
+import { LegacyRef, forwardRef, useState } from 'react';
 import { Anime } from '../types/anime';
 import Spinner from '../components/Spinner';
 import AnimeSummary from '../components/AnimeSummary';
 import { useStarFilter } from '../hooks/useStarFilter';
 import { useHeartFilter } from '../hooks/useHeartFilter';
 
-interface AnimeResponse {
-  data: Anime[];
-  meta: {
-    count: number;
-  };
-  links: {
-    first: string;
-    prev: string;
-    next: string;
-    last: string;
-  };
-}
-
 interface HomeProps {
   handleAnimeClick: (animeId: string) => void;
   animeDataStatus: 'idle' | 'loading' | 'resolved' | 'rejected';
   animeResult: Anime[];
 }
-const Home = ({
-  handleAnimeClick,
-  animeDataStatus,
-  animeResult,
-}: HomeProps) => {
+const Home = forwardRef(function AnimeList(
+  { animeDataStatus, animeResult, handleAnimeClick }: HomeProps,
+  ref: LegacyRef<HTMLDivElement> | undefined
+) {
   const [filterValue, setFilterValue] = useState('');
   const filteredData =
     filterValue === ''
@@ -101,20 +86,21 @@ const Home = ({
           );
 
           return (
-            <AnimeSummary
-              key={anime.id}
-              attributes={anime.attributes}
-              isStarActive={isStarActive}
-              handleStarClick={() => handleStarClick(anime.id)}
-              isHeartActive={isHeartActive}
-              handleHeartClick={() => handleHeartClick(anime.id)}
-              handleAnimeClick={() => handleAnimeClick(anime.id)}
-            />
+            <div key={anime.id} ref={ref}>
+              <AnimeSummary
+                attributes={anime.attributes}
+                isStarActive={isStarActive}
+                handleStarClick={() => handleStarClick(anime.id)}
+                isHeartActive={isHeartActive}
+                handleHeartClick={() => handleHeartClick(anime.id)}
+                handleAnimeClick={() => handleAnimeClick(anime.id)}
+              />
+            </div>
           );
         })}
       </div>
     </div>
   );
-};
+});
 
 export default Home;

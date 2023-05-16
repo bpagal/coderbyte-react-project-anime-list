@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import AnimeList from './AnimeList';
 import AnimeDetails from './AnimeDetails';
 import { AnimeAttributes } from '../types/anime';
@@ -13,28 +13,25 @@ const Home = () => {
     pageNumber,
   });
 
-  const observerTarget = useRef(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          setPageNumber((prevPageNumber) => prevPageNumber + 1);
+  const observer = useRef<IntersectionObserver>();
+  const lastBookElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (animeDataStatus === 'loading') return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasNextPage) {
+            setPageNumber((prevPageNumber) => prevPageNumber + 1);
+          }
+        },
+        {
+          threshold: 1,
         }
-      },
-      { threshold: 1 }
-    );
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
-
-    return () => {
-      const { current } = observerTarget;
-      if (current) {
-        observer.unobserve(current);
-      }
-    };
-  }, [observerTarget, hasNextPage]);
+      );
+      if (node) observer.current.observe(node);
+    },
+    [animeDataStatus, hasNextPage]
+  );
 
   return (
     <>
@@ -47,7 +44,7 @@ const Home = () => {
           }
         />
       ) : (
-        <div>
+        <>
           <AnimeList
             handleAnimeClick={(animeId) =>
               setAnimeDetails({
@@ -56,9 +53,9 @@ const Home = () => {
             }
             animeDataStatus={animeDataStatus}
             animeResult={animeResult}
+            ref={lastBookElementRef}
           />
-          <div ref={observerTarget} />
-        </div>
+        </>
       )}
     </>
   );
