@@ -49,22 +49,20 @@ const Home = () => {
   }
 
   return (
-    <div className="text-center bg-blue-500 mt-9">
+    <div className="mt-9">
       <h1 className="text-3xl">Anime List</h1>
       <Toolbar />
-      {animeResult.map((anime) => {
-        const { ratingRank, favoritesCount, titles } = anime.attributes;
-        const title = titles.en ?? titles.en_jp;
 
-        return (
-          <AnimeSummary
-            key={anime.id}
-            title={title}
-            ratingRank={ratingRank}
-            favoritesCount={favoritesCount}
-          />
-        );
-      })}
+      <div
+        className="grid gap-4"
+        style={{
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        }}
+      >
+        {animeResult.map((anime) => {
+          return <AnimeSummary key={anime.id} attributes={anime.attributes} />;
+        })}
+      </div>
     </div>
   );
 };
