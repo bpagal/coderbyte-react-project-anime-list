@@ -55,11 +55,18 @@ interface EpisodeResponse {
   };
 }
 
+interface WatchedEp {
+  id: string;
+  epNumber: number;
+  isWatched: boolean;
+}
+
 const Episodes = ({ animeId }: EpisodesProps) => {
   const [animeDataStatus, setAnimeDataStatus] = useState<
     'idle' | 'loading' | 'resolved' | 'rejected'
   >('idle');
   const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [watchedEps, setWatchedEps] = useState<WatchedEp[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,8 +76,14 @@ const Episodes = ({ animeId }: EpisodesProps) => {
           `http://localhost:5173/api/anime/${animeId}/episodes`
         );
         const { data: responseData } = result.data;
+        const initialWatchedEps: WatchedEp[] = responseData.map((episode) => ({
+          id: episode.id,
+          epNumber: episode.attributes.number,
+          isWatched: false,
+        }));
 
         setEpisodes(responseData);
+        setWatchedEps(initialWatchedEps);
         setAnimeDataStatus('resolved');
       } catch (error) {
         setAnimeDataStatus('rejected');
@@ -79,6 +92,19 @@ const Episodes = ({ animeId }: EpisodesProps) => {
 
     fetchData();
   }, [animeId]);
+
+  const toggleWatchedEp = (episodeId: string) => {
+    const watchedEpIdx = watchedEps.findIndex(
+      (watchedEp) => watchedEp.id === episodeId
+    );
+    const copyWatchedEps = [...watchedEps];
+
+    copyWatchedEps[watchedEpIdx] = {
+      ...copyWatchedEps[watchedEpIdx],
+      isWatched: !copyWatchedEps[watchedEpIdx].isWatched,
+    };
+    setWatchedEps(copyWatchedEps);
+  };
 
   return (
     <>
@@ -92,7 +118,30 @@ const Episodes = ({ animeId }: EpisodesProps) => {
           const { airdate, number: epNumber, synopsis } = episode.attributes;
           return (
             <div className="flex gap-7 my-4" key={episode.id}>
-              <h2 className="text-lg">✔️</h2>
+              {watchedEps.find((watchedEp) => watchedEp.id === episode.id)
+                ?.isWatched ? (
+                <span
+                  className="text-xl cursor-pointer mx-1"
+                  style={{
+                    userSelect: 'none',
+                  }}
+                  onClick={() => toggleWatchedEp(episode.id)}
+                >
+                  ✔️
+                </span>
+              ) : (
+                <span
+                  className="text-xl text-transparent cursor-pointer mx-1"
+                  style={{
+                    textShadow: '0 0 0 gray',
+                    userSelect: 'none',
+                  }}
+                  onClick={() => toggleWatchedEp(episode.id)}
+                >
+                  ✔️
+                </span>
+              )}
+
               <h2 className="text-lg">{airdate}</h2>
               <h2 className="text-lg ">{`${epNumber}: ${synopsis}`}</h2>
             </div>
