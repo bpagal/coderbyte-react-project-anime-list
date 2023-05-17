@@ -38,7 +38,7 @@ const AnimeDetails = ({
       </button>
       <div className="grid grid-cols-[0.5fr_2fr] gap-10">
         <LeftDetails attributes={attributes} animeId={animeId} />
-        <MainDetails synopsis={attributes.synopsis} />
+        <MainDetails synopsis={attributes.synopsis} animeId={animeId} />
       </div>
     </div>
   );

@@ -6,13 +6,13 @@ import AnimeSummary from '../components/AnimeSummary';
 import { useStarFilterContext } from '../hooks/useStarFilterContext';
 import { useHeartFilterContext } from '../hooks/useHeartFilterContext';
 
-interface HomeProps {
+interface AnimeListProps {
   handleAnimeClick: (animeId: string) => void;
   animeDataStatus: 'idle' | 'loading' | 'resolved' | 'rejected';
   animeResult: Anime[];
 }
-const Home = forwardRef(function AnimeList(
-  { animeDataStatus, animeResult, handleAnimeClick }: HomeProps,
+const AnimeList = forwardRef(function AnimeList2(
+  { animeDataStatus, animeResult, handleAnimeClick }: AnimeListProps,
   ref: LegacyRef<HTMLDivElement> | undefined
 ) {
   const [filterValue, setFilterValue] = useState('');
@@ -78,4 +78,4 @@ const Home = forwardRef(function AnimeList(
   );
 });
 
-export default Home;
+export default AnimeList;

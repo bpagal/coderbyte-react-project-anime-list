@@ -1,6 +1,14 @@
-const Spinner = () => {
+interface SpinnerProps {
+  isFullHeight?: boolean;
+}
+
+const Spinner = ({ isFullHeight = true }: SpinnerProps) => {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div
+      className={`${
+        isFullHeight ? 'h-screen' : ''
+      } flex justify-center items-center`}
+    >
       <div
         className="animate-spin inline-block w-16 h-16 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
         role="status"
