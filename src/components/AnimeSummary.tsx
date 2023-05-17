@@ -23,7 +23,7 @@ const AnimeSummary = ({
 
   return (
     <div
-      className="bg-gray-800 border-4 border-red-500"
+      className="bg-gray-800 border-4 border-gray-800"
       onClick={handleAnimeClick}
     >
       <img src={attributes.posterImage.small} alt="poster image" />

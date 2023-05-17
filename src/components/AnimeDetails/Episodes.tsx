@@ -92,6 +92,7 @@ const Episodes = ({ animeId }: EpisodesProps) => {
           const { airdate, number: epNumber, synopsis } = episode.attributes;
           return (
             <div className="flex gap-7 my-4" key={episode.id}>
+              <h2 className="text-lg">✔️</h2>
               <h2 className="text-lg">{airdate}</h2>
               <h2 className="text-lg ">{`${epNumber}: ${synopsis}`}</h2>
             </div>

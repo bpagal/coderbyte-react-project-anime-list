@@ -15,8 +15,12 @@ const LeftDetails = ({ attributes, animeId }: LeftDetailsProps) => {
   const isHeartActive = heartAnimes.some((elem) => elem.id === animeId);
 
   return (
-    <div className="border-4 border-gray-800 p-4">
-      <img src={attributes.posterImage.small} alt="poster image" />
+    <div className="p-4">
+      <img
+        className="border-4 border-gray-800"
+        src={attributes.posterImage.small}
+        alt="poster image"
+      />
       <div className="flex flex-col gap-4 mt-4">
         <div className="flex">
           <HeartStar
