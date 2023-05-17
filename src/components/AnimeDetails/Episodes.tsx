@@ -66,7 +66,7 @@ const Episodes = ({ animeId }: EpisodesProps) => {
       setAnimeDataStatus('loading');
       try {
         const result = await axios.get<EpisodeResponse>(
-          `https://kitsu.io/api/edge/anime/${animeId}/episodes`
+          `http://localhost:5173/api/anime/${animeId}/episodes`
         );
         const { data: responseData } = result.data;
 
