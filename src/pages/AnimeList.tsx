@@ -56,12 +56,7 @@ const AnimeList = forwardRef(function AnimeList2(
         setFilterValue={setFilterValue}
       />
 
-      <div
-        className="grid gap-4"
-        style={{
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] gap-4">
         {filteredHeartData.map((anime) => {
           return (
             <div key={anime.id} ref={ref}>
