@@ -21,7 +21,9 @@ const AnimeDetails = ({
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl text-center mb-4">Anime Details Page</h1>
+      <h1 className="text-3xl text-center mb-4">
+        {attributes.titles.en ?? attributes.titles.en_jp}
+      </h1>
       <button
         className="p-3 bg-blue-500 rounded-lg"
         onClick={() => {
