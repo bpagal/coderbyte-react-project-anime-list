@@ -57,7 +57,6 @@ interface EpisodeResponse {
 
 interface WatchedEp {
   id: string;
-  epNumber: number;
   isWatched: boolean;
 }
 
